@@ -1,0 +1,8 @@
+{
+  "stocks": [
+    {
+      "url": "https://ACTION_URL",
+      "index": "ACTION_NAME"
+    }
+  ]
+}

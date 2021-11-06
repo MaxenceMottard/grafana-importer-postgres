@@ -1,0 +1,45 @@
+version: '3.1'
+
+services:
+  nodejs:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: stats_importer
+    restart: always
+    depends_on:
+      - postgres_database
+    networks:
+      - stats-network
+    environment:
+      - NODE_ENV=production
+  postgres_database:
+    image: postgres:9.6.6
+    container_name: stats_database
+    restart: always
+    networks:
+      - stats-network
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres/sql:/docker-entrypoint-initdb.d
+  grafana:
+    image: grafana/grafana:8.2.3
+    container_name: stats-grafana
+    restart: always
+    user: "root"
+    depends_on:
+      - postgres_database
+    networks:
+      - stats-network
+    volumes:
+      - ./grafana/data:/var/lib/grafana
+    environment:
+      GF_USERS_ALLOW_SIGN_UP: "false"
+
+networks:
+  stats-network:
