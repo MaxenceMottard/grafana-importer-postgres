@@ -23,10 +23,11 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - 5432:5432
     volumes:
-      - ./postgres/sql:/docker-entrypoint-initdb.d
+      - ./postgres:/var/lib/postgresql/data/pgdata
   grafana:
     image: grafana/grafana:8.2.3
     container_name: stats-grafana
